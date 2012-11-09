@@ -13,5 +13,5 @@ target/
 # Mac OS X
 .DS_Store
 
-.idea/*
->>>>>>> Initial conversion from java
+# CodersDojo
+.codersdojo
