@@ -8,9 +8,27 @@ import java.util.*;
 public class GildedRoseTest {
 
     @Test
+    public void sulfurasNeverAges() throws Exception {
+        List<ExtendableItem> items = new ArrayList<ExtendableItem>();
+        items.add(GildedRose.sulfuras(0, 80));
+        TestableGildedRose.setItems(items);
+
+        TestableGildedRose.updateQuality();
+
+        assertThat("Sell in", items.get(0).getSellIn(), is(equalTo(0)));
+    }
+
+    @Test
+    public void conjuredItemsAgeTwiceAsFastAsNormalItems() {
+        assertItemQualityChangesBy(GildedRose.conjuredItem(10, 2), -2);
+        assertItemQualityChangesBy(GildedRose.conjuredItem(-10, 4), -4);
+        assertItemQualityChangesBy(GildedRose.conjuredItem(-10, 2), -2);
+    }
+
+    @Test
     public void dexterityVestAgesOneDayEachDay (){
-        List<Item> items = new ArrayList<Item>();
-        items.add(new Item("+5 Dexterity Vest", 10, 20));
+        List<ExtendableItem> items = new ArrayList<ExtendableItem>();
+        items.add(new ExtendableItem("+5 Dexterity Vest", 10, 20));
         TestableGildedRose.setItems(items);
 
         TestableGildedRose.updateQuality();
@@ -19,40 +37,64 @@ public class GildedRoseTest {
     }
 
     @Test
+    public void obviouslyBackstagePassesAreWorthlessWhenTheShowIsOver() {
+        assertItemQualityChangesBy(GildedRose.backstagePasses(0, 20), -20);
+    }
+
+    @Test
+    public void itShouldIncreaseTheQualityOfABackstagePassByTwoStartingWithTenDaysLeftIncludingTheZerothDay() {
+        assertItemQualityChangesBy(GildedRose.backstagePasses(10, 20), 2);
+        assertItemQualityChangesBy(GildedRose.backstagePasses(11, 20), 1);
+    }
+
+    @Test
+    public void itShouldIncreaseTheQualityOfABackstagePassByThreeStartingWithFiveDaysLeftIncludingTheZerothDay() {
+        assertItemQualityChangesBy(GildedRose.backstagePasses(5, 20), 3);
+        assertItemQualityChangesBy(GildedRose.backstagePasses(6, 20), 2);
+    }
+
+
+
+    @Test
     public void dexterityVestDecreasesOneInQualityEachDay (){
-        assertItemQualityChangesBy(new Item("+5 Dexterity Vest", 10, 20), -1);
+        assertItemQualityChangesBy(new ExtendableItem("+5 Dexterity Vest", 10, 20), -1);
     }
 
     @Test
     public void agedBrieIncreaseOneQualityEachDay (){
-        assertItemQualityChangesBy(new Item("Aged Brie", 2, 0), 1);
+        assertItemQualityChangesBy(GildedRose.agedBrie(2, 0), 1);
+    }
+
+    @Test
+    public void agedBrieIncreasesTwoQualitiesEachDayAfterItsSellInDate() {
+        assertItemQualityChangesBy(GildedRose.agedBrie(-2, 5), 2);
     }
 
     @Test
     public void agedBrieWithQualityFiftyDoesntChangeQuality (){
-        assertItemQualityChangesBy(new Item("Aged Brie", 2, 50), 0);
+        assertItemQualityChangesBy(GildedRose.agedBrie(2, 50), 0);
     }
 
     @Test
     public void dexterityVestDecreasesDoubleInQualityAfterSellInDate (){
-        assertItemQualityChangesBy(new Item("+5 Dexterity Vest", 0, 20), -2 * 1);
+        assertItemQualityChangesBy(new ExtendableItem("+5 Dexterity Vest", 0, 20), -2 * 1);
     }
 
 
     @Test
-    public void BackstagepassesLoosesQualityAfterSellInDate (){
-        assertItemQualityChangesBy(new Item("Backstage passes to a TAFKAL80ETC concert", 0, 20), -20);
+    public void backstagePassesLoosesQualityAfterSellInDate (){
+        assertItemQualityChangesBy(GildedRose.backstagePasses(0, 20), -20);
     }
 
     @Test
     public void agedBrieIncreasesQualityByTwoIfBelowFiftyAfterSellInDate (){
-        assertItemQualityChangesBy(new Item("Aged Brie", 0, 45), 2);
+        assertItemQualityChangesBy(GildedRose.agedBrie(0, 45), 2);
     }
 
-    private void assertItemQualityChangesBy(final Item item, final int qualityDelta) {
+    private void assertItemQualityChangesBy(final ExtendableItem item, final int qualityDelta) {
         int previousQuality = item.getQuality();
 
-        List<Item> items = new ArrayList<Item>();
+        List<ExtendableItem> items = new ArrayList<ExtendableItem>();
         items.add(item);
         TestableGildedRose.setItems(items);
 
