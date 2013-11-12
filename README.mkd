@@ -1,3 +1,8 @@
+<html>
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
 Slightly modified german Version of the guilded rose refactoring kata.
 Source: http://www.iamnotmyself.com/2011/02/13/RefactorThisTheGildedRoseKata.aspx
 
@@ -47,5 +52,8 @@ der uns seither mit arkanen Waren beliefert.
 Fühlt euch ganz frei, die "aktualisiere_qualitaet" Funktion zu verändern und neuen Code zu schreiben, 
 solange alles bisherige Verhalten weiterhin korrekt seinen Dienst tut.
 
-Viel Erfolg wünscht
+Viel Erfolg wünscht<br />
 Das Team der Goldenen Gans
+
+</body>
+</html>
